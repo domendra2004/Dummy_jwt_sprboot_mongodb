@@ -2,13 +2,9 @@ package com.domen.service;
 
 import java.util.Collection;
 
+import com.domen.entity.FileDetail;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.domen.dao.EmployeeDAO;
 import com.domen.entity.Employee;
@@ -31,6 +27,9 @@ public class EmployeeService {
 		//Example<Employee> e=Example.of(employee);
 		return employeeDAO.loginUser(username,password);
 	}
-	
-		
+
+
+    public FileDetail saveDocDetails(FileDetail fileDetail) {
+	return  employeeDAO.saveDocDetails(fileDetail);
+    }
 }
