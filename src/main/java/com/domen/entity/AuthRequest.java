@@ -1,7 +1,8 @@
 package com.domen.entity;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
-
+@ApiModel(description = "Authentication request object")
 public class AuthRequest {
 	private String username;
 	private String password;

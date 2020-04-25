@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.util.Collection;
 
 import com.domen.entity.FileDetail;
+import com.domen.service.FileService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,13 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.domen.entity.AuthRequest;
@@ -43,6 +38,9 @@ public static String fileDirectory = System.getProperty("user.dir") + "/uploaded
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
+	@Autowired
+	private FileService fileService;
+
 	@GetMapping("/")
 	@ApiOperation(value = "Welcome")
 	public String welcome() {
@@ -55,6 +53,18 @@ public static String fileDirectory = System.getProperty("user.dir") + "/uploaded
 		return employeeService.saveEmployee(employee);
 	}
 
+	@DeleteMapping("/deleteUserByUsername")
+	@ApiOperation(value = "For deleting Employee using username")
+	public void DeleteUserByUserName(@RequestParam("username") String username){
+		 employeeService.deleteUserByUsername(username);
+	}
+	@DeleteMapping("/deleteUserById")
+	@ApiOperation(value = "For deleting Employee using id")
+	public void DeleteUserById(@RequestParam("id") String id){
+		employeeService.deleteUserById(id);
+	}
+
+
 	@GetMapping("/employeeDetails")
 	@ApiOperation(value = "Get Employee Details")
 	public Collection<Employee> getEmployee() {
@@ -65,39 +75,31 @@ public static String fileDirectory = System.getProperty("user.dir") + "/uploaded
 	@ApiOperation(value = "For Upload Document")
 	public ResponseEntity<Object> uploadfile(@RequestParam("file") MultipartFile file, HttpServletRequest req) throws IOException {
 		String currentToken=req.getHeader("Authorization");
-		String fileName="";
+		LocalTime time = LocalTime.now();
 		String message="Not Available";
-		String username="";
-		String uploadedTime="";
+		String username=jwtUtil.extractUsername(currentToken);
+		String uploadedTime=time+"";
+		String fileName=username+uploadedTime+file.getOriginalFilename();
+			if(fileService.saveDocDetails(
+					new FileDetail(username,fileDirectory,fileName,uploadedTime))!=null){
 
-		if(!jwtUtil.isTokenExpired(currentToken)){
-				LocalTime time = LocalTime.now();
-				uploadedTime=time+"";
-				username=jwtUtil.extractUsername(currentToken);
-				fileName=username+uploadedTime+file.getOriginalFilename();
 				File converFile = new File(fileDirectory ,fileName);
 				converFile.createNewFile();
 				FileOutputStream fout = new FileOutputStream(converFile);
 				fout.write(file.getBytes());
 				fout.close();
-				message="File Created";
-FileDetail filed=employeeService.saveDocDetails(new FileDetail(username,fileDirectory,fileName,uploadedTime));
-			if(filed!=null){
-
 				message="File is Uploaded successfully";
 			}else{
 				message="File Not Uploaded";
-				//fout.flush();
 			}
-			}else{
-				message="Token Expired";
-			}
-
-		//export username
-
-
 
 		return new ResponseEntity<>(message, HttpStatus.OK);
+	}
+
+	@GetMapping("getUploadedFileDetailsByUsername")
+	@ApiOperation(value = "Uploaded file details of user")
+	public Collection<FileDetail>getUploadedDetailsbyUserName(@RequestParam("username") String username){
+		return fileService.getUploadedDetailsbyUserName(username);
 	}
 
 	@PostMapping("/authenticate")

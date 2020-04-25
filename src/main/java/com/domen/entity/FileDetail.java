@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModel;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document()
-@ApiModel(description = "Employee Object")
+@ApiModel(description = "File Details Object")
 public class FileDetail {
     private String username;
     private String path;

@@ -27,9 +27,13 @@ public class EmployeeService {
 		//Example<Employee> e=Example.of(employee);
 		return employeeDAO.loginUser(username,password);
 	}
+	public void deleteUserByUsername(String username){
+		employeeDAO.deleteUserByName(username);
+	}
+	public void deleteUserById(String id){
+		employeeDAO.deletebyId(id);
+	}
 
 
-    public FileDetail saveDocDetails(FileDetail fileDetail) {
-	return  employeeDAO.saveDocDetails(fileDetail);
-    }
+
 }

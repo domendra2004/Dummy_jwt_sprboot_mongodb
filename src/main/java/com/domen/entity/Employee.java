@@ -15,6 +15,8 @@ import lombok.Setter;
 @Document()
 @ApiModel(description = "Employee Object")
 public class Employee {
+
+private String id;
 private String fullname;
 private String username;
 private String password;
@@ -55,7 +57,16 @@ public Employee(String fullname, String username, String password, String mobile
 	this.password = password;
 	this.mobile = mobile;
 }
-public Employee() {
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Employee() {
 	super();
 }
 

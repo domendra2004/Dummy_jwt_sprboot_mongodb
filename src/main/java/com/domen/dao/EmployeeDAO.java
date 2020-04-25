@@ -14,8 +14,6 @@ import com.domen.entity.Employee;
 public class EmployeeDAO {
 	@Autowired
 	EmployeeRepository repository;
-	@Autowired
-	FileRepository fileRepository;
 
 	public Collection<Employee> getEmployee(){
 		return repository.findAll();
@@ -26,13 +24,16 @@ public class EmployeeDAO {
 	}
 
 	public Employee loginUser(String username ,String password) {
-		Employee employee1=repository.loginUser(username, password);
-		return employee1;
-				
+		return repository.loginUser(username, password);
+	}
+	public void deleteUserByName(String username) {
+		 repository.deleteByUsername(username);
 	}
 
-    public FileDetail saveDocDetails(FileDetail fileDetail) {
-			return fileRepository.insert(fileDetail);
-
+	public void deletebyId(String id){
+		repository.deleteById(id);
 	}
+
+
+
 }

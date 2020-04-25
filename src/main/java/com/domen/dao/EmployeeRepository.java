@@ -10,6 +10,7 @@ public interface EmployeeRepository extends MongoRepository<Employee,String> {
 	@Query(value = "{'username' : ?0,'password' : ?1}")
 	public Employee loginUser(String username,String password);
 	
-	Employee findByUsername(String username);
+	public Employee findByUsername(String username);
+	public void deleteByUsername(String username);
 
 }
