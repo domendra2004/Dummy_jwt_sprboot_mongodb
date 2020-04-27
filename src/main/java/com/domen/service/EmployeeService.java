@@ -3,6 +3,7 @@ package com.domen.service;
 import java.util.Collection;
 
 import com.domen.entity.FileDetail;
+import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,9 @@ public class EmployeeService {
 
 	public Employee saveEmployee(Employee employee) {	
 		return employeeDAO.saveEmployee(employee);
+	}
+	public UpdateResult updateEmployee(String username, String password, String mobile){
+		return employeeDAO.updateEmployee(username,password,mobile);
 	}
 
 	public Employee loginUser(String username,String password) {

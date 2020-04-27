@@ -9,6 +9,7 @@ import java.util.Collection;
 
 import com.domen.entity.FileDetail;
 import com.domen.service.FileService;
+import com.mongodb.client.result.UpdateResult;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -66,7 +67,15 @@ public static String fileDirectory = System.getProperty("user.dir") + "/uploaded
 	public void DeleteUserById(@RequestParam("id") String id){
 		employeeService.deleteUserById(id);
 	}
+//
 
+	@PutMapping("/updateEmployee")
+	@ApiOperation(value = "For updating mobile number or password")
+	public UpdateResult updateEmployee(@RequestParam(required = false) String password, @RequestParam(required = false) String mobile,
+									   HttpServletRequest req) {
+	String username=jwtUtil.extractUsername(req.getHeader("Authorization"));
+		return employeeService.updateEmployee(username,password,mobile);
+	}
 
 	@GetMapping("/employeeDetails")
 	@ApiOperation(value = "Get all employee details")
