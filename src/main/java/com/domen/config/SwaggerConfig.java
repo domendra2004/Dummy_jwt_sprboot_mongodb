@@ -16,19 +16,11 @@ import java.time.LocalDate;
 import java.util.*;
 
 @EnableSwagger2
-@Configuration    //extends WebMvcConfigurerAdapter
+@Configuration
 public class SwaggerConfig  {
     @Bean
     public Docket SwaggerConfig(){
-        /*return  new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .paths(PathSelectors.any())
-                .apis(RequestHandlerSelectors.basePackage("com.domen.controller"))
-                .build().apiInfo(getApinInfo())
-                .useDefaultResponseMessages(false)//
-                .securitySchemes(new ArrayList<>(Arrays.asList(new ApiKey("%token", "Authorization", "Header"))))//
-                .genericModelSubstitutes(Optional.class);
-    }*/
+
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .paths(PathSelectors.any())

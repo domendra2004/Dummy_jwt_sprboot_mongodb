@@ -57,12 +57,12 @@ public static String fileDirectory = System.getProperty("user.dir") + "/uploaded
 		return employeeService.saveEmployee(employee);
 	}
 
-	@DeleteMapping("/deleteUserByUsername")
+	@DeleteMapping("/deleteEmployeeByUsername")
 	@ApiOperation(value = "For deleting Employee using username")
 	public void DeleteUserByUserName(@RequestParam("username") String username){
 		 employeeService.deleteUserByUsername(username);
 	}
-	@DeleteMapping("/deleteUserById")
+	@DeleteMapping("/deleteEmployeeById")
 	@ApiOperation(value = "For deleting employee using id")
 	public void DeleteUserById(@RequestParam("id") String id){
 		employeeService.deleteUserById(id);
@@ -77,18 +77,22 @@ public static String fileDirectory = System.getProperty("user.dir") + "/uploaded
 		return employeeService.updateEmployee(username,password,mobile);
 	}
 
-	@GetMapping("/employeeDetails")
+	@GetMapping("/allEmployeeDetails")
 	@ApiOperation(value = "Get all employee details")
 	public Collection<Employee> getEmployee() {
 		return employeeService.getEmployee();
 	}
 
-	@GetMapping("getUserDetailsByUsername")
+	@GetMapping("getEmployeeDetailsByUsername")
 	@ApiOperation(value = "UserDetails details using their username")
 	public Employee getUserDetails(@RequestParam("username") String username){
 		return employeeService.getUserDetails(username);
 	}
-
+	@GetMapping("countUploadedDoc")
+	@ApiOperation(value = "It will returns number of uploaded document of employee")
+	public long countDoc(@RequestParam("username") String username){
+		return employeeService.countDoc(username);
+	}
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@ApiOperation(value = "For Upload Document")
@@ -137,7 +141,7 @@ public static String fileDirectory = System.getProperty("user.dir") + "/uploaded
     }
 
 	@GetMapping("getUploadedFileDetailsByUsername")
-	@ApiOperation(value = "Uploaded file details of user")
+	@ApiOperation(value = "Uploaded file details of Employee")
 	public Collection<FileDetail>getUploadedDetailsbyUserName(@RequestParam("username") String username){
 		return fileService.getUploadedDetailsbyUserName(username);
 	}
