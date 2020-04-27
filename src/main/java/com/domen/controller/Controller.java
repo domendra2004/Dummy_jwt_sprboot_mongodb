@@ -50,8 +50,8 @@ public static String fileDirectory = System.getProperty("user.dir") + "/uploaded
 		return "Welcome";
 	}
 
-	@RequestMapping(value = "/add", method = RequestMethod.POST, consumes = { "application/json" })
-	@ApiOperation(value = "For Adding new Employee")
+	@RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = { "application/json" })
+	@ApiOperation(value = "For sign up")
 	public Employee saveEmployee(@RequestBody Employee employee) {
 		return employeeService.saveEmployee(employee);
 	}
@@ -62,17 +62,24 @@ public static String fileDirectory = System.getProperty("user.dir") + "/uploaded
 		 employeeService.deleteUserByUsername(username);
 	}
 	@DeleteMapping("/deleteUserById")
-	@ApiOperation(value = "For deleting Employee using id")
+	@ApiOperation(value = "For deleting employee using id")
 	public void DeleteUserById(@RequestParam("id") String id){
 		employeeService.deleteUserById(id);
 	}
 
 
 	@GetMapping("/employeeDetails")
-	@ApiOperation(value = "Get Employee Details")
+	@ApiOperation(value = "Get all employee details")
 	public Collection<Employee> getEmployee() {
 		return employeeService.getEmployee();
 	}
+
+	@GetMapping("getUserDetailsByUsername")
+	@ApiOperation(value = "UserDetails details using their username")
+	public Employee getUserDetails(@RequestParam("username") String username){
+		return employeeService.getUserDetails(username);
+	}
+
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@ApiOperation(value = "For Upload Document")
@@ -100,6 +107,7 @@ public static String fileDirectory = System.getProperty("user.dir") + "/uploaded
 	}
 
     @RequestMapping(value = "/download", method = RequestMethod.GET)
+	@ApiOperation(value = "Download file using path and filename")
     public ResponseEntity<Object> downloadFile(@RequestParam("path") String path,@RequestParam("filename") String filename) throws IOException
     {
         String downloadableFile =path+"/"+filename ;
@@ -126,7 +134,7 @@ public static String fileDirectory = System.getProperty("user.dir") + "/uploaded
 	}
 
 	@PostMapping("/authenticate")
-	@ApiOperation(value = "For Authenticate user")
+	@ApiOperation(value = "For Authenticate/login user")
 	public String generateToken(@RequestBody AuthRequest authRequest) throws Exception {
 		try {
 			authenticationManager.authenticate(

@@ -34,6 +34,9 @@ public class EmployeeDAO {
 		repository.deleteById(id);
 	}
 
+	public Employee getUserDetails(String username){
+		return repository.findByUsername(username);
+	}
 
 
 }

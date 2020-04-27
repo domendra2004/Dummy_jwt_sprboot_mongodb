@@ -35,5 +35,7 @@ public class EmployeeService {
 	}
 
 
-
+	public Employee getUserDetails(String username) {
+		return employeeDAO.getUserDetails(username);
+	}
 }
