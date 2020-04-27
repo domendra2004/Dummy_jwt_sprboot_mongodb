@@ -70,7 +70,7 @@ public static String fileDirectory = System.getProperty("user.dir") + "/uploaded
 //
 
 	@PutMapping("/updateEmployee")
-	@ApiOperation(value = "For updating mobile number or password")
+	@ApiOperation(value = "For updating mobile number and/or password")
 	public UpdateResult updateEmployee(@RequestParam(required = false) String password, @RequestParam(required = false) String mobile,
 									   HttpServletRequest req) {
 	String username=jwtUtil.extractUsername(req.getHeader("Authorization"));
