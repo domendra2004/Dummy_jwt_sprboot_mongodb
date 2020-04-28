@@ -52,7 +52,7 @@ public static String fileDirectory = System.getProperty("user.dir") + "/uploaded
 	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = { "application/json" })
-	@ApiOperation(value = "For sign up")
+	@ApiOperation(value = "For sign up/register")
 	public Employee saveEmployee(@RequestBody Employee employee) {
 		return employeeService.saveEmployee(employee);
 	}
@@ -121,8 +121,10 @@ public static String fileDirectory = System.getProperty("user.dir") + "/uploaded
 
     @RequestMapping(value = "/download", method = RequestMethod.GET)
 	@ApiOperation(value = "Download file using path and filename")
-    public ResponseEntity<Object> downloadFile(@RequestParam("path") String path,@RequestParam("filename") String filename) throws IOException
+    public ResponseEntity<Object> downloadFile(@RequestParam("filename") String filename) throws IOException
     {
+        String path="/home/xyz/Springboot_jwt_mongodb/uploaded";
+
         String downloadableFile =path+"/"+filename ;
         File file = new File(downloadableFile);
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));

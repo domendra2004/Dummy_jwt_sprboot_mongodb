@@ -1,6 +1,7 @@
 package com.domen.entity;
 
 import io.swagger.annotations.ApiModel;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -16,8 +17,10 @@ import lombok.Setter;
 @ApiModel(description = "Employee Object")
 public class Employee {
 
-private String id;
+//private String id;
 private String fullname;
+
+@Id
 private String username;
 private String password;
 private String mobile;
@@ -57,14 +60,14 @@ public Employee(String fullname, String username, String password, String mobile
 	this.password = password;
 	this.mobile = mobile;
 }
-
+/*
 	public String getId() {
 		return id;
 	}
 
 	public void setId(String id) {
 		this.id = id;
-	}
+	}*/
 
 	public Employee() {
 	super();
