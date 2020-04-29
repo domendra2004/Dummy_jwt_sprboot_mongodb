@@ -19,4 +19,7 @@ public class FileService {
     public Collection<FileDetail>getUploadedDetailsbyUserName(String username){
         return fileDao.getUploadedDetailsbyUserName(username);
     }
+    public long countDoc(String username) {
+        return fileDao.countDoc(username);
+    }
 }

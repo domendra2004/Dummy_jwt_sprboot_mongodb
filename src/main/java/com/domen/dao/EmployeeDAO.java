@@ -31,10 +31,11 @@ public class EmployeeDAO {
 	public Employee loginUser(String username ,String password) {
 		return repository.loginUser(username, password);
 	}
+
+
 	public void deleteUserByName(String username) {
 		 repository.deleteByUsername(username);
 	}
-
 	public void deletebyId(String id){
 		repository.deleteById(id);
 	}
@@ -56,10 +57,5 @@ public class EmployeeDAO {
 	}
 
 
-	public long countDoc(String username) {
-		Query query = new Query();
-		query.addCriteria(Criteria.where("username").is(username));
 
-		return mongoOperations.count(query,Employee.class);
-	}
 }

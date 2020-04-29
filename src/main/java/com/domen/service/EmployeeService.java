@@ -43,7 +43,5 @@ public class EmployeeService {
 		return employeeDAO.getUserDetails(username);
 	}
 
-	public long countDoc(String username) {
-		return employeeDAO.countDoc(username);
-	}
+
 }
