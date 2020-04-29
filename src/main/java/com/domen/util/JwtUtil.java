@@ -53,12 +53,4 @@ public class JwtUtil{
     }
 
 
-public Boolean invalidateToken(String token){
-
-
-
-        return false;
-}
-
-
 }

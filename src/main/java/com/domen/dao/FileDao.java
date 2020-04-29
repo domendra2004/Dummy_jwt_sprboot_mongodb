@@ -30,7 +30,14 @@ public class FileDao {
 
         return mongoOperations.count(query, FileDetail.class);
     }
+    public Collection<FileDetail> fileDetailsByDate(String date){
+        Query query=new Query();
+        query.addCriteria(Criteria.where("uploadedTime").is(date));
 
+        return mongoOperations.find(query,FileDetail.class);
+
+
+    }
 
 
 

@@ -44,11 +44,11 @@ public class AuthController {
         return jwtUtil.generateToken(authRequest.getUsername());
     }
 
-    @GetMapping(value = "/signout")
+   /* @GetMapping(value = "/signout")
     @ApiOperation(value = "For signout")
     public String logout(HttpServletRequest request) {
      return jwtUtil.extractUsername(request.getHeader("Authenticate"));
-    }
+    }*/
 
 
 
