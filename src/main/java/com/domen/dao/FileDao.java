@@ -1,6 +1,5 @@
 package com.domen.dao;
 
-import com.domen.entity.Employee;
 import com.domen.entity.FileDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -40,6 +39,9 @@ public class FileDao {
     }
 
 
+    public Collection<FileDetail> getUploadedFileDetailsDateWise() {
 
+                    return null;
 
+    }
 }

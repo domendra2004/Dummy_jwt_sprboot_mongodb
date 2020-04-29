@@ -79,7 +79,7 @@ public class EmployeeController {
 		return employeeService.getEmployee();
 	}
 
-	@GetMapping("getEmployeeDetailsByUsername")
+	@GetMapping("/getEmployeeDetailsByUsername")
 	@ApiOperation(value = "UserDetails details using their username")
 	public Employee getUserDetails(@RequestParam("username") String username){
 		return employeeService.getUserDetails(username);

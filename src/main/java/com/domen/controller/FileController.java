@@ -28,7 +28,7 @@ public class FileController {
     private FileService fileService;
 
 
-    @GetMapping("getUploadedFileDetailsByUsername")
+    @GetMapping("/getUploadedFileDetailsByUsername")
     @ApiOperation(value = "Uploaded file details of Employee")
     public Collection<FileDetail> getUploadedDetailsbyUserName(@RequestParam("username") String username){
         return fileService.getUploadedDetailsbyUserName(username);
@@ -48,19 +48,23 @@ public class FileController {
         String currentToken=req.getHeader("Authorization");
         return new ResponseEntity<>(fileService.uploadDocument(jwtUtil.extractUsername(currentToken),file), HttpStatus.OK);
     }
-    @GetMapping("countUploadedDoc")
+    @GetMapping("/countUploadedDoc")
     @ApiOperation(value = "It will returns number of uploaded document of employee")
     public long countDoc(@RequestParam("username") String username){
         return fileService.countDoc(username);
     }
 
-
-    @GetMapping("getUploadedFileDetailsByDate")
+    @GetMapping("/getUploadedFileDetailsByDate")
     @ApiOperation(value = "It will returns details of uploaded file of employee in any particular date")
     public Collection<FileDetail> fileDetailsByDate(@RequestParam("date") String date){
         return fileService.fileDetailsByDate(date);
     }
 
+    @GetMapping("/getUploadedFileDetailsDateWise")
+    @ApiOperation(value = "It will returns file  details date wise")
+    public  Collection<FileDetail> getUploadedFileDetailsDateWise(){
+        return null;
+    }
 
 
 
