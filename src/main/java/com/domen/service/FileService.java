@@ -81,5 +81,7 @@ return message;
     }
 
 
-
+    public Collection<FileDetail> getUploadedFileDetailsDateWise() {
+        return null;
+    }
 }
