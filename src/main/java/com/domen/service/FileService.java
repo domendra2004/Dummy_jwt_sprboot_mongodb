@@ -9,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -17,6 +16,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 public class FileService {
@@ -25,7 +26,11 @@ public class FileService {
     FileDao fileDao;
     DateTimeFormatter dtf;
     DateTimeFormatter dtf2;
-    private static String fileDirectory = System.getProperty("user.dir") + "/uploaded";
+    private static Logger logger=Logger.getLogger(FileService.class.getName());
+    private static final String FILE_DIRECTORY = System.getProperty("user.dir") + "/uploaded";
+    public enum dirEnum{
+        FILE_DIRECTORY;
+    }
 
     public FileDetail saveDocDetails(FileDetail fileDetail) {
         return  fileDao.saveDocDetails(fileDetail);
@@ -46,16 +51,18 @@ public class FileService {
         dtf= DateTimeFormatter.ofPattern("yyMMddHHmm");
         dtf2= DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime now = LocalDateTime.now();
-        String message="Not Available";
+        String message;
         String uploadedTime=dtf2.format(now);
         String fileName=username+dtf.format(now)+file.getOriginalFilename();
-        if(saveDocDetails(new FileDetail(username,fileDirectory,fileName,uploadedTime))!=null){
+        if(saveDocDetails(new FileDetail(username,FILE_DIRECTORY,fileName,uploadedTime))!=null){
+            try(FileOutputStream fout=new FileOutputStream(new File(FILE_DIRECTORY ,fileName))){
 
-            File converFile = new File(fileDirectory ,fileName);
-            converFile.createNewFile();
-            FileOutputStream fout = new FileOutputStream(converFile);
-            fout.write(file.getBytes());
-            fout.close();
+                fout.write(file.getBytes());
+                }catch (IOException e){
+                logger.log(Level.parse("FileService uploadDocumnet()"),e.toString());
+                }
+
+
             message="File is Uploaded successfully";
         }else{
             message="File Not Uploaded";
@@ -65,7 +72,7 @@ return message;
 
 
     public ResponseEntity<Object> downlaodFile(String filename)throws IOException{
-        String downloadableFile =fileDirectory+"/"+filename ;
+        String downloadableFile =FILE_DIRECTORY+"/"+filename ;
         File file = new File(downloadableFile);
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
         HttpHeaders headers = new HttpHeaders();
@@ -82,6 +89,6 @@ return message;
 
 
     public Collection<FileDetail> getUploadedFileDetailsDateWise() {
-        return null;
+        return fileDao.getUploadedFileDetailsDateWise();
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document()
 @ApiModel(description = "File Details Object")
 public class FileDetail {
+
     private String username;
     private String path;
     private String fileName;

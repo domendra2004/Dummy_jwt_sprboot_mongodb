@@ -18,8 +18,11 @@ import java.util.*;
 @EnableSwagger2
 @Configuration
 public class SwaggerConfig  {
+
+
+
     @Bean
-    public Docket SwaggerConfig(){
+    public Docket config(){
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()

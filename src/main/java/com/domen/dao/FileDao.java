@@ -3,10 +3,10 @@ package com.domen.dao;
 import com.domen.entity.FileDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
-
 import java.util.Collection;
 
 @Component
@@ -32,16 +32,17 @@ public class FileDao {
     public Collection<FileDetail> fileDetailsByDate(String date){
         Query query=new Query();
         query.addCriteria(Criteria.where("uploadedTime").is(date));
-
         return mongoOperations.find(query,FileDetail.class);
-
 
     }
 
-
     public Collection<FileDetail> getUploadedFileDetailsDateWise() {
-
-                    return null;
+        TypedAggregation<FileDetail> studentAggregation =
+                Aggregation.newAggregation(FileDetail.class,
+                        Aggregation.group("uploadedTime"));
+        AggregationResults<FileDetail> results = mongoOperations.
+                aggregate(studentAggregation, FileDetail.class);
+        return results.getMappedResults();
 
     }
 }

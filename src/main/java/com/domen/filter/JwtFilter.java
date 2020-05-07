@@ -6,16 +6,12 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.domen.service.CustomUserDetailService;
@@ -36,17 +32,13 @@ public class JwtFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain)
 			throws ServletException, IOException {
+		boolean isTokenValidate;
 
 		 String authorizationHeader = httpServletRequest.getHeader("Authorization");
 
 	        String token = null;
 	        String username = null;
-	        
-	        
-//	        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-//	            token = authorizationHeader.substring(7);
-//	            userName = jwtUtil.extractUsername(token);
-//	        }
+
 	        if (authorizationHeader != null) {
 	            token = authorizationHeader;
 	            username = jwtUtil.extractUsername(token);
@@ -54,8 +46,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
 	        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 	            UserDetails userDetails = service.loadUserByUsername(username);
-
-	            if (jwtUtil.validateToken(token, userDetails)) {
+				isTokenValidate=jwtUtil.validateToken(token, userDetails);
+	            if (Boolean.TRUE.equals(isTokenValidate)) {
 	                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
 	                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 	                usernamePasswordAuthenticationToken

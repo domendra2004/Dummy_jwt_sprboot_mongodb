@@ -7,7 +7,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,8 +17,6 @@ import java.util.Collection;
 @RestController
 @Api(tags = {"File Operation Related API"})
 public class FileController {
-
-    public static String fileDirectory = System.getProperty("user.dir") + "/uploaded";
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -34,15 +31,13 @@ public class FileController {
         return fileService.getUploadedDetailsbyUserName(username);
     }
 
-    @RequestMapping(value = "/download", method = RequestMethod.GET)
+    @GetMapping("/download")
     @ApiOperation(value = "Download file using path and filename")
     public ResponseEntity<Object> downloadFile(@RequestParam("filename") String filename) throws IOException
     {
         return fileService.downlaodFile(filename);
     }
-
-
-    @RequestMapping(value = "/upload", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping("/upload")
     @ApiOperation(value = "For Upload Document")
     public ResponseEntity<Object> uploadfile(@RequestParam("file") MultipartFile file, HttpServletRequest req) throws IOException {
         String currentToken=req.getHeader("Authorization");
@@ -62,8 +57,8 @@ public class FileController {
 
     @GetMapping("/getUploadedFileDetailsDateWise")
     @ApiOperation(value = "It will returns file  details date wise")
-    public  Collection<FileDetail> getUploadedFileDetailsDateWise(){
-        return null;
+    public Collection<FileDetail> getUploadedFileDetailsDateWise(){
+        return fileService.getUploadedFileDetailsDateWise();
     }
 
 
