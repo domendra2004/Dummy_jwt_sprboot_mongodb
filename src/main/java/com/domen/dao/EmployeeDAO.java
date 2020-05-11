@@ -36,10 +36,6 @@ public class EmployeeDAO {
 		return repository.loginUser(username, password);
 	}
 
-
-	public void deleteUserByName(String username) {
-		 repository.deleteByUsername(username);
-	}
 	public void deleteById(String id){
 		repository.deleteById(id);
 	}

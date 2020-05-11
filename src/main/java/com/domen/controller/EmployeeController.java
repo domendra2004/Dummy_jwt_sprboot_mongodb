@@ -34,12 +34,6 @@ public class EmployeeController {
 		return "Welcome";
 	}
 
-
-	@DeleteMapping("/deleteEmployeeByUsername")
-	@ApiOperation(value = "For deleting Employee using username")
-	public void deleteUserByUserName(@RequestParam("username") String username){
-		 employeeService.deleteUserByUsername(username);
-	}
 	@DeleteMapping("/deleteEmployeeById")
 	@ApiOperation(value = "For deleting employee using id")
 	public void deleteUserById(@RequestParam("id") String id){
@@ -47,7 +41,7 @@ public class EmployeeController {
 	}
 
 	@PutMapping("/updateEmployee")
-	@ApiOperation(value = "For updating mobile number and/or password")
+	@ApiOperation(value = "For updating current loged in user (mobile number and/or password ) ")
 
 	public UpdateResult updateEmployee(@RequestParam(required = false) String password, @RequestParam(required = false) String mobile,
 									   HttpServletRequest req) {

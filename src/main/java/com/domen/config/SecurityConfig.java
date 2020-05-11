@@ -41,9 +41,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
 	}
-	@Override
+@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
+		.csrf().ignoringAntMatchers("/upload",
+				"/deleteEmployeeByUsername",
+				"/deleteEmployeeById",
+				"/updateEmployee")
+		.and()
 		.authorizeRequests()
 		.anyRequest()
 		.authenticated()
@@ -51,6 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.exceptionHandling().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 	}
+
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/swagger-ui.html")
@@ -60,5 +66,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/authenticate")
 		.antMatchers("/signup")
 		.antMatchers("/");
+
 	}
 }

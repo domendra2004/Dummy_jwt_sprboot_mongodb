@@ -28,9 +28,6 @@ public class EmployeeService {
 	public Employee loginUser(String username,String password) {
 		return employeeDAO.loginUser(username,password);
 	}
-	public void deleteUserByUsername(String username){
-		employeeDAO.deleteUserByName(username);
-	}
 	public void deleteUserById(String id){
 		employeeDAO.deleteById(id);
 	}

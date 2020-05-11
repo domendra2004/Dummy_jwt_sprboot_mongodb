@@ -7,8 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DummyJwtSprbootMongodbApplication {
 
 	public static void main(String[] args) {SpringApplication
-			.run(DummyJwtSprbootMongodbApplication.class, args);}
-
-
+			.run(DummyJwtSprbootMongodbApplication.class, args);
+	}
 
 }

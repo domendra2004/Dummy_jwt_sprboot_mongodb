@@ -2,6 +2,9 @@ package com.domen.entity;
 
 import io.swagger.annotations.ApiModel;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 
 @Document()
 @ApiModel(description = "File Details Object")
@@ -10,7 +13,9 @@ public class FileDetail {
     private String username;
     private String path;
     private String fileName;
-    private String uploadedTime;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime uploadedTime;
 
     public String getUsername() {
         return username;
@@ -36,15 +41,15 @@ public class FileDetail {
         this.fileName = fileName;
     }
 
-    public String getUploadedTime() {
+    public LocalDateTime getUploadedTime() {
         return uploadedTime;
     }
 
-    public void setUploadedTime(String uploadedTime) {
+    public void setUploadedTime(LocalDateTime uploadedTime) {
         this.uploadedTime = uploadedTime;
     }
 
-    public FileDetail(String username, String path, String fileName, String uploadedTime) {
+    public FileDetail(String username, String path, String fileName, LocalDateTime uploadedTime) {
         this.username = username;
         this.path = path;
         this.fileName = fileName;

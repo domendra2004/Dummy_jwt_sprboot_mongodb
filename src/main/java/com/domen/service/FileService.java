@@ -52,9 +52,8 @@ public class FileService {
         dtf2= DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime now = LocalDateTime.now();
         String message;
-        String uploadedTime=dtf2.format(now);
         String fileName=username+dtf.format(now)+file.getOriginalFilename();
-        if(saveDocDetails(new FileDetail(username,FILE_DIRECTORY,fileName,uploadedTime))!=null){
+        if(saveDocDetails(new FileDetail(username,FILE_DIRECTORY,fileName,now))!=null){
             try(FileOutputStream fout=new FileOutputStream(new File(FILE_DIRECTORY ,fileName))){
 
                 fout.write(file.getBytes());
