@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,7 +43,7 @@ public class FileService {
         return fileDao.countDoc(username);
     }
 
-    public Collection<FileDetail> fileDetailsByDate(String date) {
+    public FileDetail fileDetailsByDate( LocalDateTime date) {
         return fileDao.fileDetailsByDate(date);
     }
 

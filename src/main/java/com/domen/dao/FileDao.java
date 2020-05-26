@@ -7,7 +7,11 @@ import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoField;
 import java.util.Collection;
+import java.util.Date;
 
 @Component
 public class FileDao {
@@ -29,10 +33,13 @@ public class FileDao {
 
         return mongoOperations.count(query, FileDetail.class);
     }
-    public Collection<FileDetail> fileDetailsByDate(String date){
+    public FileDetail fileDetailsByDate( LocalDateTime date){
+
         Query query=new Query();
-        query.addCriteria(Criteria.where("uploadedTime").is(date));
-        return mongoOperations.find(query,FileDetail.class);
+        date=date.with(ChronoField.NANO_OF_DAY,0);
+        query.addCriteria(Criteria.where("uploadedTime").gte(Date.from(date.toInstant(ZoneOffset.UTC))).lte(Date.from(date.plusDays(1).toInstant(ZoneOffset.UTC))));
+        //FileDetail fl= mongoOperations.findOne(query,FileDetail.class);
+        return mongoOperations.findOne(query,FileDetail.class);
 
     }
 
