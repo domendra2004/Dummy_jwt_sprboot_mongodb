@@ -59,12 +59,8 @@ public class FileController {
     public FileDetail fileDetailsByDate(@RequestParam("uploadedTime")
                                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                 LocalDate date){
-    //public FileDetail fileDetailsByDate(@RequestParam("uploadedTime") String date){
-      // Instant instant = Instant.parse(date);
-       // Date date1 = Date.from(instant);
-        //LocalDateTime ldt=date;
-        FileDetail fl=fileService.fileDetailsByDate(date.atStartOfDay());
-        return fl;
+        return  fileService.fileDetailsByDate(date.atStartOfDay());
+
     }
 
 
