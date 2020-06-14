@@ -30,7 +30,6 @@ public class FileDao {
     public long countDoc(String username) {
         Query query = new Query();
         query.addCriteria(Criteria.where("username").is(username));
-
         return mongoOperations.count(query, FileDetail.class);
     }
     public FileDetail fileDetailsByDate( LocalDateTime date){
@@ -38,9 +37,31 @@ public class FileDao {
         Query query=new Query();
         date=date.with(ChronoField.NANO_OF_DAY,0);
         query.addCriteria(Criteria.where("uploadedTime").gte(Date.from(date.toInstant(ZoneOffset.UTC))).lte(Date.from(date.plusDays(1).toInstant(ZoneOffset.UTC))));
-        //FileDetail fl= mongoOperations.findOne(query,FileDetail.class);
         return mongoOperations.findOne(query,FileDetail.class);
 
+    }
+    public long countDocUsingUsernameAndDate(String username, LocalDateTime date) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("uploadedTime").gte(Date.from(date.toInstant(ZoneOffset.UTC))).lte(Date.from(date.plusDays(1).toInstant(ZoneOffset.UTC))).and("username").is(username));
+        return mongoOperations.count(query, FileDetail.class);
+    }
+    public long countDocByDate(LocalDateTime date) {
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where("uploadedTime").gte(Date.from(date.toInstant(ZoneOffset.UTC))).lte(Date.from(date.plusDays(1).toInstant(ZoneOffset.UTC))));
+        return mongoOperations.count(query, FileDetail.class);
+    }
+
+
+    public Collection<FileDetail> getAllUploadedFileDetails() {
+        return fileRepository.findAll();
+    }
+
+    public Collection<FileDetail> getUploadedFileDetailsUsingUsernameAndDate(String username, LocalDateTime date) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("uploadedTime").gte(Date.from(date.toInstant(ZoneOffset.UTC))).lte(Date.from(date.plusDays(1).toInstant(ZoneOffset.UTC))).and("username").is(username));
+
+        return mongoOperations.find(query,FileDetail.class);
     }
 
     public Collection<FileDetail> getUploadedFileDetailsDateWise() {
@@ -52,4 +73,8 @@ public class FileDao {
         return results.getMappedResults();
 
     }
+
+
+
+
 }

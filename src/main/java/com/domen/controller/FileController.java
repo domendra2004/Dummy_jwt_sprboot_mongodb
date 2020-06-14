@@ -13,12 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 
 @RestController
 @Api(tags = {"File Operation Related API"})
@@ -31,9 +28,14 @@ public class FileController {
 
 
     @GetMapping("/getUploadedFileDetailsByUsername")
-    @ApiOperation(value = "Uploaded file details of Employee")
+    @ApiOperation(value = "All Uploaded file details of Particular Employee using username")
     public Collection<FileDetail> getUploadedDetailsbyUserName(@RequestParam("username") String username){
         return fileService.getUploadedDetailsbyUserName(username);
+    }
+    @GetMapping("/getAllUploadedFileDetails")
+    @ApiOperation(value = "All Uploaded file details of Employee")
+    public Collection<FileDetail> getAllUploadedDetails(){
+        return fileService.getAllUploadedDetails();
     }
 
     @GetMapping("/download")
@@ -54,6 +56,30 @@ public class FileController {
         return fileService.countDoc(username);
     }
 
+    @GetMapping("/countUploadedDocByUsernameAndDate")
+    @ApiOperation(value = "It will returns Number of uploaded document by user in any perticular date")
+    public long countDocUsingUsernameAndDate(@RequestParam("username") String username,@RequestParam("date")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate date){
+        return fileService.countDocUsingUsernameAndDate(username,date.atStartOfDay());
+    }
+    @GetMapping("/countUploadedDocByDate")
+    @ApiOperation(value = "It will returns number of uploaded files any particular date")
+    public long countDocByDate(@RequestParam("uploadedTime")
+                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                LocalDate date){
+        return  fileService.countDocByDate(date.atStartOfDay());
+
+    }
+
+
+
+    @GetMapping("/getUploadedDocByUsernameAndDate")
+    @ApiOperation(value = "It will returns List of uploaded document by user in any perticular date")
+    public Collection<FileDetail> getUploadedFileDetailsUsingUsernameAndDate(@RequestParam("username") String username,@RequestParam("date")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate date){
+        return fileService.getUploadedFileDetailsUsingUsernameAndDate(username, date.atStartOfDay());
+    }
+
     @GetMapping("/getUploadedFileDetailsByDate")
     @ApiOperation(value = "It will returns details of uploaded file of employee in any particular date")
     public FileDetail fileDetailsByDate(@RequestParam("uploadedTime")
@@ -63,9 +89,9 @@ public class FileController {
 
     }
 
-
+    //Not Completed like grouping
     @GetMapping("/getUploadedFileDetailsDateWise")
-    @ApiOperation(value = "It will returns file  details date wise")
+    @ApiOperation(value = "{Not Completed }It will returns file  details date wise")
     public Collection<FileDetail> getUploadedFileDetailsDateWise(){
         return fileService.getUploadedFileDetailsDateWise();
     }

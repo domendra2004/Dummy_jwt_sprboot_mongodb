@@ -13,10 +13,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,6 +29,20 @@ public class FileService {
     DateTimeFormatter dtf2;
     private static Logger logger=Logger.getLogger(FileService.class.getName());
     private static final String FILE_DIRECTORY = System.getProperty("user.dir") + "/uploaded";
+
+    public Collection<FileDetail> getAllUploadedDetails() {
+        return fileDao.getAllUploadedFileDetails();
+    }
+
+    public Collection<FileDetail> getUploadedFileDetailsUsingUsernameAndDate(String username, LocalDateTime date) {
+        return fileDao.getUploadedFileDetailsUsingUsernameAndDate(username,date);
+    }
+
+    public long countDocByDate(LocalDateTime date) {
+        return fileDao.countDocByDate(date);
+    }
+
+
     public enum dirEnum{
         FILE_DIRECTORY;
     }
@@ -85,6 +99,9 @@ return message;
         return ResponseEntity.ok().headers(headers)
                 .contentLength(file.length())
                 .contentType(MediaType.parseMediaType("application/txt")).body(resource);
+    }
+    public long countDocUsingUsernameAndDate(String username, LocalDateTime date) {
+        return fileDao.countDocUsingUsernameAndDate(username,date);
     }
 
 

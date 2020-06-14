@@ -24,8 +24,6 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-
-    //@RequestMapping(value = "/signup", method = RequestMethod.POST, consumes = { "application/json" })
     @PostMapping("/signup")
     @ApiOperation(value = "For sign up/register")
     public Employee saveEmployee(@RequestBody Employee employee) {
