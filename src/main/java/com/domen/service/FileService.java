@@ -1,6 +1,7 @@
 package com.domen.service;
 
 import com.domen.dao.FileDao;
+import com.domen.entity.CustomDatewiseModel;
 import com.domen.entity.FileDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -13,7 +14,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
@@ -105,7 +105,7 @@ return message;
     }
 
 
-    public Collection<FileDetail> getUploadedFileDetailsDateWise() {
+    public Collection<CustomDatewiseModel> getUploadedFileDetailsDateWise() {
         return fileDao.getUploadedFileDetailsDateWise();
     }
 }

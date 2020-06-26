@@ -14,6 +14,7 @@ public class FileDetail {
     private String path;
     private String fileName;
 
+
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime uploadedTime;
 

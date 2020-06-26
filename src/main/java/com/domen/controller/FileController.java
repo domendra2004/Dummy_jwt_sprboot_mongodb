@@ -1,5 +1,6 @@
 package com.domen.controller;
 
+import com.domen.entity.CustomDatewiseModel;
 import com.domen.entity.FileDetail;
 import com.domen.service.FileService;
 import com.domen.util.JwtUtil;
@@ -89,10 +90,9 @@ public class FileController {
 
     }
 
-    //Not Completed like grouping
     @GetMapping("/getUploadedFileDetailsDateWise")
     @ApiOperation(value = "{Not Completed }It will returns file  details date wise")
-    public Collection<FileDetail> getUploadedFileDetailsDateWise(){
+    public Collection<CustomDatewiseModel> getUploadedFileDetailsDateWise(){
         return fileService.getUploadedFileDetailsDateWise();
     }
 

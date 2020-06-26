@@ -1,5 +1,6 @@
 package com.domen.dao;
 
+import com.domen.entity.CustomDatewiseModel;
 import com.domen.entity.FileDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -12,6 +13,7 @@ import java.time.ZoneOffset;
 import java.time.temporal.ChronoField;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class FileDao {
@@ -64,13 +66,22 @@ public class FileDao {
         return mongoOperations.find(query,FileDetail.class);
     }
 
-    public Collection<FileDetail> getUploadedFileDetailsDateWise() {
-        TypedAggregation<FileDetail> studentAggregation =
-                Aggregation.newAggregation(FileDetail.class,
-                        Aggregation.group("uploadedTime"));
-        AggregationResults<FileDetail> results = mongoOperations.
-                aggregate(studentAggregation, FileDetail.class);
-        return results.getMappedResults();
+    public Collection<CustomDatewiseModel> getUploadedFileDetailsDateWise() {
+
+            Aggregation aggregation=Aggregation.newAggregation(
+                    Aggregation.project().andInclude("_id","username","path","fileName","uploadedTime")
+                            .andExpression("dayOfMonth(uploadedTime)").as("day")
+                            .andExpression("month(uploadedTime)").as("month")
+                            .andExpression("year(uploadedTime)").as("year")
+                    ,
+                    Aggregation.group("day","month","year").addToSet("$$ROOT").as("uploaders")
+            );
+
+            AggregationResults<CustomDatewiseModel> rs=mongoOperations.aggregate(aggregation,"fileDetail", CustomDatewiseModel.class);
+
+            List<CustomDatewiseModel> dw=rs.getMappedResults();
+            return dw;
+
 
     }
 
