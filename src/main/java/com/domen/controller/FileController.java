@@ -91,7 +91,7 @@ public class FileController {
     }
 
     @GetMapping("/getUploadedFileDetailsDateWise")
-    @ApiOperation(value = "{Not Completed }It will returns file  details date wise")
+    @ApiOperation(value = "It will returns file  details date wise")
     public Collection<CustomDatewiseModel> getUploadedFileDetailsDateWise(){
         return fileService.getUploadedFileDetailsDateWise();
     }
