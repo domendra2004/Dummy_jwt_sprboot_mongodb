@@ -13,7 +13,6 @@ import java.time.ZoneOffset;
 import java.time.temporal.ChronoField;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 @Component
 public class FileDao {
@@ -22,6 +21,8 @@ public class FileDao {
     FileRepository fileRepository;
     @Autowired
     MongoOperations mongoOperations;
+    private static final String KEY_USERNAME ="username";
+    private static final String KEY_UPLOADED_TIME ="uploadedTime";
 
     public FileDetail saveDocDetails(FileDetail fileDetail) {
         return fileRepository.insert(fileDetail);
@@ -31,26 +32,26 @@ public class FileDao {
     }
     public long countDoc(String username) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("username").is(username));
+        query.addCriteria(Criteria.where(KEY_USERNAME).is(username));
         return mongoOperations.count(query, FileDetail.class);
     }
     public FileDetail fileDetailsByDate( LocalDateTime date){
 
         Query query=new Query();
         date=date.with(ChronoField.NANO_OF_DAY,0);
-        query.addCriteria(Criteria.where("uploadedTime").gte(Date.from(date.toInstant(ZoneOffset.UTC))).lte(Date.from(date.plusDays(1).toInstant(ZoneOffset.UTC))));
+        query.addCriteria(Criteria.where(KEY_UPLOADED_TIME).gte(Date.from(date.toInstant(ZoneOffset.UTC))).lte(Date.from(date.plusDays(1).toInstant(ZoneOffset.UTC))));
         return mongoOperations.findOne(query,FileDetail.class);
 
     }
     public long countDocUsingUsernameAndDate(String username, LocalDateTime date) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("uploadedTime").gte(Date.from(date.toInstant(ZoneOffset.UTC))).lte(Date.from(date.plusDays(1).toInstant(ZoneOffset.UTC))).and("username").is(username));
+        query.addCriteria(Criteria.where(KEY_UPLOADED_TIME).gte(Date.from(date.toInstant(ZoneOffset.UTC))).lte(Date.from(date.plusDays(1).toInstant(ZoneOffset.UTC))).and(KEY_USERNAME).is(username));
         return mongoOperations.count(query, FileDetail.class);
     }
     public long countDocByDate(LocalDateTime date) {
 
         Query query = new Query();
-        query.addCriteria(Criteria.where("uploadedTime").gte(Date.from(date.toInstant(ZoneOffset.UTC))).lte(Date.from(date.plusDays(1).toInstant(ZoneOffset.UTC))));
+        query.addCriteria(Criteria.where(KEY_UPLOADED_TIME).gte(Date.from(date.toInstant(ZoneOffset.UTC))).lte(Date.from(date.plusDays(1).toInstant(ZoneOffset.UTC))));
         return mongoOperations.count(query, FileDetail.class);
     }
 
@@ -61,7 +62,7 @@ public class FileDao {
 
     public Collection<FileDetail> getUploadedFileDetailsUsingUsernameAndDate(String username, LocalDateTime date) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("uploadedTime").gte(Date.from(date.toInstant(ZoneOffset.UTC))).lte(Date.from(date.plusDays(1).toInstant(ZoneOffset.UTC))).and("username").is(username));
+        query.addCriteria(Criteria.where(KEY_UPLOADED_TIME).gte(Date.from(date.toInstant(ZoneOffset.UTC))).lte(Date.from(date.plusDays(1).toInstant(ZoneOffset.UTC))).and(KEY_USERNAME).is(username));
 
         return mongoOperations.find(query,FileDetail.class);
     }
@@ -69,18 +70,13 @@ public class FileDao {
     public Collection<CustomDatewiseModel> getUploadedFileDetailsDateWise() {
 
             Aggregation aggregation=Aggregation.newAggregation(
-                    Aggregation.project().andInclude("_id","username","path","fileName","uploadedTime")
+                    Aggregation.project().andInclude("_id", KEY_USERNAME,"path","fileName", KEY_UPLOADED_TIME)
                             .andExpression("dayOfMonth(uploadedTime)").as("day")
                             .andExpression("month(uploadedTime)").as("month")
-                            .andExpression("year(uploadedTime)").as("year")
-                    ,
+                            .andExpression("year(uploadedTime)").as("year"),
                     Aggregation.group("day","month","year").addToSet("$$ROOT").as("uploaders")
             );
-
-            AggregationResults<CustomDatewiseModel> rs=mongoOperations.aggregate(aggregation,"fileDetail", CustomDatewiseModel.class);
-
-            List<CustomDatewiseModel> dw=rs.getMappedResults();
-            return dw;
+            return mongoOperations.aggregate(aggregation,"fileDetail", CustomDatewiseModel.class).getMappedResults();
 
 
     }
